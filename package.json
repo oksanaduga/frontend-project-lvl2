@@ -2,7 +2,7 @@
   "name": "frontend-project-lvl2",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/gendiff.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
@@ -32,6 +32,7 @@
     "dist"
   ],
   "dependencies": {
-    "commander": "^4.1.1"
+    "commander": "^4.1.1",
+    "lodash": "^4.17.15"
   }
 }
