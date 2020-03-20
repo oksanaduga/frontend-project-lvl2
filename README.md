@@ -1,7 +1,7 @@
 difference calculator, second project from Hexlet
 
-[![Maintainability](https://github.com/oksanaduga/frontend-project-lvl2/workflows/badge.svg?event=pull_request)]
-![run-tests](https://github.com/oksanaduga/frontend-project-lvl2/workflows/run-tests/badge.svg)
+
+![](https://github.com/oksanaduga/frontend-project-lvl2/workflows/.github/workflows/nodejs.yml/badge.svg)
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/da467244383d64009024/test_coverage)](https://codeclimate.com/github/oksanaduga/frontend-project-lvl2/test_coverage)
 
