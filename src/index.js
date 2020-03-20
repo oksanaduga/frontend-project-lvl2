@@ -1,15 +1,14 @@
 #!/usr/bin/env node
 
 import { has } from 'lodash';
-var fs = require('fs')
+import parse from '../src/parsers.js';
+
 
 
 const diff = (beforePath, afterPath) => {
-  const beforeText = fs.readFileSync(beforePath);
-  const afterText = fs.readFileSync(afterPath)
+  const objBefore = parse(beforePath);
+  const objAfter = parse(afterPath);
 
-  const objBefore = JSON.parse(beforeText);
-  const objAfter = JSON.parse(afterText);
   let acc = "";
   const newObj = { ...objBefore, ...objAfter };
   const arrOfKeys = Object.keys(newObj);
