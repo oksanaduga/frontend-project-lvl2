@@ -1,6 +1,6 @@
 difference calculator, second project from Hexlet
 
-[![Node CI](https://github.com/oksanaduga/frontend-project-lvl2/workflows/.github/workflows/nodejs.yml/badge.svg)](https://github.com/oksanaduga/frontend-project-lvl2/actions?query=workflow%3Aworkflows/nodejs.yml+branch%3Amaster)
+[![Node CI](https://github.com/oksanaduga/frontend-project-lvl2/workflows/.github/workflows/nodejs.yml/badge.svg)](https://github.com/oksanaduga/frontend-project-lvl2/runs/521848265?check_suite_focus=true)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/da467244383d64009024/maintainability)](https://codeclimate.com/github/oksanaduga/frontend-project-lvl2/maintainability)
 
