@@ -1,11 +1,8 @@
 difference calculator, second project from Hexlet
 
+[![Node CI](https://github.com/oksanaduga/frontend-project-lvl2/workflows/.github/workflows/nodejs.yml/badge.svg)](https://github.com/oksanaduga/frontend-project-lvl2/workflows/nodejs.yml/badge.svg)
 
-![](https://github.com/oksanaduga/frontend-project-lvl2/workflows/.github/workflows/nodejs.yml/badge.svg)
-
-
-
-[![workflows/nodejs.yml](https://github.com/oksanaduga/frontend-project-lvl2/workflows/.github/workflows/nodejs.yml/badge.svg)](https://github.com/oksanaduga/frontend-project-lvl2/workflows/nodejs.yml/badge.svg)
+[![Maintainability](https://api.codeclimate.com/v1/badges/da467244383d64009024/maintainability)](https://codeclimate.com/github/oksanaduga/frontend-project-lvl2/maintainability)
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/da467244383d64009024/test_coverage)](https://codeclimate.com/github/oksanaduga/frontend-project-lvl2/test_coverage)
 
