@@ -6,5 +6,10 @@ difference calculator, second project from Hexlet
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/da467244383d64009024/test_coverage)](https://codeclimate.com/github/oksanaduga/frontend-project-lvl2/test_coverage)
 
-install gendiff
+install gendiff and use for json
 <a href="https://asciinema.org/a/311347?autoplay=1&speed=2&size=medium" target="_blank"><img src="https://asciinema.org/a/311347.svg" /></a>
+
+
+use for yml
+
+<a href="https://asciinema.org/a/cfcwNqEZ1TkI2qIQRUKgirqhD?autoplay=1&speed=2&size=medium" target="_blank"><img src="https://asciinema.org/a/cfcwNqEZ1TkI2qIQRUKgirqhD.svg" /></a>

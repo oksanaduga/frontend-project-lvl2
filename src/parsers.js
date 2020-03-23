@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-var fs = require('fs');
-var yaml = require('js-yaml');
+import fs from 'fs';
+import yaml from 'js-yaml';
 
 const parse = (pathToFail) => {
   const textFromPath = fs.readFileSync(pathToFail);
@@ -10,6 +10,6 @@ const parse = (pathToFail) => {
   } else if (pathToFail.endsWith('.yml')) {
     return yaml.safeLoad(textFromPath);
   }
-};
+}
 
 export default parse;

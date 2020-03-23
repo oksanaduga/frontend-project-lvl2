@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { has } from 'lodash';
-import parse from '../src/parsers.js';
+import parse from './parsers.js';
 
 
 
