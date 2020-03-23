@@ -13,3 +13,8 @@ install gendiff and use for json
 use for yml
 
 <a href="https://asciinema.org/a/cfcwNqEZ1TkI2qIQRUKgirqhD?autoplay=1&speed=2&size=medium" target="_blank"><img src="https://asciinema.org/a/cfcwNqEZ1TkI2qIQRUKgirqhD.svg" /></a>
+
+
+use for ini
+
+<a href="https://asciinema.org/a/312689?autoplay=1&speed=2&size=medium" target="_blank"><img src="https://asciinema.org/a/312689.svg" /></a>
