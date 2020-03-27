@@ -3,22 +3,6 @@ import fs from 'fs';
 
 const path = __dirname;
 
-test('render(diff)', () => {
-  const diff = [
-    { key: "host", value: "hexlet.io" },
-    { sign: "+", key: "timeout", value: 20 },
-    { sign: "-", key: "timeout", value: 50 },
-    { sign: "-", key: "proxy", value: 123 },
-    { sign: "+", key: "verbose", value: true },
-    { sign: "-", key: "follow", value: false },
-  ];
-
-  const expected = fs.readFileSync(`${__dirname}/fixtures/render.txt`, 'utf8');
-  const output = render(diff);
-  expect(output).toBe(expected);
-});
-
-
 test('renderNested(diff)', () => {
   const diffNested = [
     { key: "common", value: [
