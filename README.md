@@ -18,3 +18,7 @@ use for yml
 use for ini
 
 <a href="https://asciinema.org/a/312689?autoplay=1&speed=2&size=medium" target="_blank"><img src="https://asciinema.org/a/312689.svg" /></a>
+
+use for nested
+
+<a href="https://asciinema.org/a/313997?autoplay=1&speed=2&size=medium" target="_blank"><img src="https://asciinema.org/a/313997.svg" /></a>

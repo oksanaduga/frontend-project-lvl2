@@ -10,7 +10,7 @@ test.each([
     {
       host: "hexlet.io",
       timeout: 50,
-      proxy: "123.234.53.22",
+      proxy: 123,
       follow: false
     }],
   [`${path}/fixtures/before.yml`,
@@ -30,6 +30,6 @@ test.each([
     [`${path}/fixtures/beforeNested.json`, beforeObject],
     [`${path}/fixtures/beforeNested.yml`, beforeObject],
     [`${path}/fixtures/beforeNested.ini`, beforeObjectAfterFormatIni],
-])('.add(%s, %o)', (a, expected) => {
+])('parse(%s, %o)', (a, expected) => {
   expect(parse(a)).toStrictEqual(expected);
 });

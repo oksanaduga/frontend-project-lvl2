@@ -1,0 +1,15 @@
+{
+    common: {
+        setting1: Value 1
+      - setting2: 200
+      - setting3: true
+      + follow: false
+    }
+    setting6: {
+        key: value
+      + ops: vops
+    }
+  + setting3: {
+        key: value
+    }
+}
