@@ -35,6 +35,6 @@ test.each([
   [parse(`${path}/fixtures/beforeNested.json`), parse(`${path}/fixtures/afterNested.json`), littleArrNested],
   [parse(`${path}/fixtures/beforeNested.yml`), parse(`${path}/fixtures/afterNested.yml`), littleArrNested],
   [parse(`${path}/fixtures/beforeNested.ini`), parse(`${path}/fixtures/afterNested.ini`), littleArrNestedIni],
-])('.add(%o, %o)', (a, b, expected) => {
+])('diff(%o, %o)', (a, b, expected) => {
   expect(diff(a, b)).toMatchObject(expected);
 });

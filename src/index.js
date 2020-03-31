@@ -2,13 +2,13 @@
 
 import parse from './parsers';
 import diff from './diff';
-import render from './render'
+import { plain, json } from './formatters';
 
-const gendiff = (beforePath, afterPath) => {
+const gendiff = (beforePath, afterPath, format = 'json') => {
   const objBefore = parse(beforePath);
   const objAfter = parse(afterPath);
   const arrOfDifference = diff(objBefore, objAfter);
-  return render(arrOfDifference);
+  return json(arrOfDifference);
 }
 
 export default gendiff;

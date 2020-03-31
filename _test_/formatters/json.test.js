@@ -1,9 +1,8 @@
-import render from '../src/render';
+import { json } from '../../src/formatters';
 import fs from 'fs';
 
-const path = __dirname;
 
-test('renderNested(diff)', () => {
+test('json(diff)', () => {
   const diffNested = [
     { key: "common", value: [
       { key: "setting1", value: "Value 1" },
@@ -18,7 +17,10 @@ test('renderNested(diff)', () => {
     ]}
   ];
 
-  const expected = fs.readFileSync(`${path}/fixtures/renderNested.txt`, 'utf8');
-  const output = render(diffNested);
+  const expected = fs.readFileSync(
+    `${__dirname}/../fixtures/jsonFormat.txt`,
+    'utf8'
+  );
+  const output = json(diffNested);
   expect(output).toBe(expected);
 });
