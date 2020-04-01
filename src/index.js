@@ -8,7 +8,7 @@ const gendiff = (beforePath, afterPath, format = 'json') => {
   const objBefore = parse(beforePath);
   const objAfter = parse(afterPath);
   const arrOfDifference = diff(objBefore, objAfter);
-  return json(arrOfDifference);
+  return format === 'json' ? json(arrOfDifference) : plain(arrOfDifference);
 }
 
 export default gendiff;

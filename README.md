@@ -22,3 +22,7 @@ use for ini
 use for nested
 
 <a href="https://asciinema.org/a/313997?autoplay=1&speed=2&size=medium" target="_blank"><img src="https://asciinema.org/a/313997.svg" /></a>
+
+result in selected format
+
+<a href="https://asciinema.org/a/315631?autoplay=1&speed=2&size=medium" target="_blank"><img src="https://asciinema.org/a/315631.svg" /></a>
