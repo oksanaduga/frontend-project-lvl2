@@ -14,6 +14,7 @@ const signMap = { '-': ' was deleted', '+': ' was added with value: ' };
 
 const plain = (diff) => {
   const iter = (arr, nestedKey, accum) => {
+
     return arr.reduce((acc, el, i) => {
       const { sign, key, value } = el;
       let property = '';
@@ -35,6 +36,7 @@ const plain = (diff) => {
       } else if (sign !== undefined) {
         if (acc.match(key)) {
           acc;
+
         } else {
           property = `${nestedKey}${key}`;
           phrase = signMap[sign];
