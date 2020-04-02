@@ -4,12 +4,16 @@ import fs from 'fs';
 const path = __dirname;
 
 test.each([
-  [`${path}/fixtures/beforeNested.json`, `${path}/fixtures/afterNested.json`, 'nested',
-    fs.readFileSync(`${path}/fixtures/nestedFormat.txt`, 'utf-8')],
-  [`${path}/fixtures/beforeNested.yml`, `${path}/fixtures/afterNested.yml`, 'nested',
-  fs.readFileSync(`${path}/fixtures/nestedFormat.txt`, 'utf-8')],
-  [`${path}/fixtures/beforeNested.ini`, `${path}/fixtures/afterNested.ini`, 'nested',
-    fs.readFileSync(`${path}/fixtures/nestedFormatIni.txt`, 'utf-8')],
-])('gendiff(%s, %s, %s)', (a, b, c, expected) => {
-  expect(gendiff(a, b, c)).toBe(expected);
+  [`/fixtures/beforeNested.json`, `/fixtures/afterNested.json`, 'nested',
+    `${path}/fixtures/nestedFormat.txt`, 'utf-8'],
+  [`/fixtures/beforeNested.yml`, `/fixtures/afterNested.yml`, 'nested',
+    `${path}/fixtures/nestedFormat.txt`, 'utf-8'],
+  [`/fixtures/beforeNested.ini`, `/fixtures/afterNested.ini`, 'nested',
+    `${path}/fixtures/nestedFormatIni.txt`, 'utf-8'],
+])('gendiff(%s, %s, %s)', (a, b, format, pathToFile) => {
+    const fileA = `${path}${a}`;
+    const fileB = `${path}${b}`;
+    const expected = fs.readFileSync(pathToFile, 'utf8');
+
+  expect(gendiff(fileA, fileB, format)).toBe(expected);
 });

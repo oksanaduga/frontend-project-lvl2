@@ -1,4 +1,4 @@
-export default () => {
+const diffNested = () => {
   const arr = [
     { key: "common", value: [
       { key: "setting1", value: "Value 1" },
@@ -14,3 +14,5 @@ export default () => {
   ];
   return arr;
 };
+
+export default diffNested;
