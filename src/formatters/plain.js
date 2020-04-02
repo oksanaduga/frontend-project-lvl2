@@ -30,16 +30,11 @@ const plain = (diff) => {
          content = `${typeValue(arr[i + 1].value)} to ${typeValue(value)}`;
          acc = `${acc}Property '${property}'${phrase}${content}\n`;
 
-      } else if (sign !== undefined) {
-        if (acc.match(key)) {
-          
-
-        } else {
+      } else if (sign !== undefined && acc.indexOf(key) === -1) {
           property = `${nestedKey}${key}`;
           phrase = signMap[sign];
           content = sign === '-' ? '' : typeValue(value);
           acc = `${acc}Property '${property}'${phrase}${content}\n`;
-        }
       }
       return acc;
     }, accum);
