@@ -28,9 +28,7 @@ const plain = (diff) => {
       } else if (arr[i + 1] !== undefined && arr[i + 1].key === key) {
          property = `${nestedKey}${key}`;
          phrase = ' was changed from ';
-         let valueDelete = arr[i + 1].value;
-         let valueAdd = value;
-         content = `${typeValue(valueDelete)} to ${typeValue(valueAdd)}`;
+         content = `${typeValue(arr[i + 1].value)} to ${typeValue(value)}`;
          acc = `${acc}Property '${property}'${phrase}${content}\n`;
 
       } else if (sign !== undefined) {
