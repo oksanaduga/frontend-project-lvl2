@@ -1,42 +1,34 @@
 import { has, isPlainObject } from 'lodash';
 
+const changed = (key, from, to) => [
+  { sign: '+', key, value: to },
+  { sign: '-', key, value: from },
+];
+
+const add = (key, value) => ({ sign: '+', key, value });
+const remove = (key, value) => ({ sign: '-', key, value });
+const notChanged = (key, value) => ({ key, value });
+
+const diffFromTwo = (key, from, to) => {
+  if (isPlainObject(from) && isPlainObject(to)) {
+    const nestedDiff = diff(from, to);
+    return [notChanged(key, nestedDiff)];
+  }
+  if (from === to) {
+    return [notChanged(key, to)];
+  }
+  return changed(key, from, to);
+};
+
+const diffFromOne = (key, from, to) => from ? remove(key, from) : add(key, to);
+
 const diff = (objBefore, objAfter) => {
   const arrOfKeys = Object.keys({ ...objBefore, ...objAfter });
-
   return arrOfKeys.reduce((acc, key) => {
-    let newAcc = [];
-    if (has(objBefore, [key]) && has(objAfter, [key])) {
-      if (isPlainObject(objBefore[key]) && isPlainObject(objAfter[key])) {
-        newAcc = [...acc, {
-          key,
-          value: diff(objBefore[key], objAfter[key]),
-        }];
-      } else if (objBefore[key] === objAfter[key]) {
-        newAcc = [...acc, {
-          key,
-          value: objAfter[key],
-        }];
-      } else {
-        newAcc = [
-          ...acc,
-          { sign: '+', key, value: objAfter[key] },
-          { sign: '-', key, value: objBefore[key] },
-        ];
-      }
-    } else if (has(objBefore, [key])) {
-      newAcc = [...acc, {
-        sign: '-',
-        key,
-        value: objBefore[key],
-      }];
-    } else {
-      newAcc = [...acc, {
-        sign: '+',
-        key,
-        value: objAfter[key],
-      }];
+    if (has(objBefore, key) && has(objAfter, key)) {
+      return [...acc, ...diffFromTwo(key, objBefore[key], objAfter[key])];
     }
-    return newAcc;
+    return [...acc, diffFromOne(key, objBefore[key], objAfter[key])];
   }, []);
 };
 
