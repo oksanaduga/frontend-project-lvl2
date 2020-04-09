@@ -25,4 +25,4 @@ use for nested
 
 select result format
 
-<a href="https://asciinema.org/a/315898?autoplay=1&speed=2&size=medium" target="_blank"><img src="https://asciinema.org/a/315898.svg" /></a>
+<a href="https://asciinema.org/a/318109?autoplay=1&speed=2&size=medium" target="_blank"><img src="https://asciinema.org/a/318109.svg" /></a>

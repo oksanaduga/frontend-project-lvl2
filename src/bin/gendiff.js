@@ -6,9 +6,10 @@ import gendiff from '../index';
 program
   .description('Compares two configuration files and shows a difference.')
   .version('0.1.0')
-  .option('-f, --format [nested, plain, json]', 'output format', (format) => console.log(`you set format ${format}`))
-  .arguments('<firstConfig> <secondConfig> <format>')
-  .action((firstConfig, secondConfig, format) => {
+  .option('-f, --format [nested, plain, json]', 'output format')
+  .arguments('<firstConfig> <secondConfig>')
+  .action((firstConfig, secondConfig) => {
+    const format = program.format;
     console.log(gendiff(firstConfig, secondConfig, format));
   });
 
