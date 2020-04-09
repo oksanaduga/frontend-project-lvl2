@@ -9,8 +9,8 @@ program
   .option('-f, --format [nested, plain, json]', 'output format')
   .arguments('<firstConfig> <secondConfig>')
   .action((firstConfig, secondConfig) => {
-    const format = program.format;
-    console.log(gendiff(firstConfig, secondConfig, format));
+    const useFormat = program.format;
+    console.log(gendiff(firstConfig, secondConfig, useFormat));
   });
 
 
