@@ -1,16 +1,21 @@
 import fs from 'fs';
+import path from 'path';
 import gendiff from '../src/index';
 
-const path = __dirname;
+const getFixturePath = (filename) => path.join(__dirname, '__fixtures__', filename);
+const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
+
 
 test.each([
-  [`${path}/fixtures/beforeNested.json`, `${path}/fixtures/afterNested.json`, 'json',
-    `${path}/fixtures/jsonFormat.json`],
-  [`${path}/fixtures/beforeNested.yml`, `${path}/fixtures/afterNested.yml`, 'plain',
-    `${path}/fixtures/plainFormat.txt`],
-  [`${path}/fixtures/beforeNested.ini`, `${path}/fixtures/afterNested.ini`, 'nested',
-    `${path}/fixtures/nestedFormatIni.txt`],
+  ['beforeNested.json', 'afterNested.json', 'json',
+    'jsonFormat.json'],
+  ['beforeNested.yml', 'afterNested.yml', 'plain',
+    'plainFormat.txt'],
+  ['beforeNested.ini', 'afterNested.ini', 'nested',
+    'nestedFormatIni.txt'],
 ])('gendiff(%o, %o, %s, %s)', (before, after, format, pathToFile) => {
-  const expected = fs.readFileSync(pathToFile, 'utf8');
-  expect(gendiff(before, after, format)).toBe(expected);
+  const beforePath = getFixturePath(before);
+  const afterPath = getFixturePath(after);
+  const expected = readFile(pathToFile, 'utf8');
+  expect(gendiff(beforePath, afterPath, format)).toBe(expected);
 });
