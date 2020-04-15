@@ -4,8 +4,8 @@ import ini from 'ini';
 import has from 'lodash';
 
 const formatFromPath = (path) => {
-  const defineIndexForFormat = path.lastIndexOf('.') + 1;
-  const nameFormat = path.substr(defineIndexForFormat);
+  const defineIndexFormat = path.lastIndexOf('.') + 1;
+  const nameFormat = path.substr(defineIndexFormat);
   return nameFormat;
 };
 
@@ -15,7 +15,7 @@ const parsers = {
   ini: ini.parse,
 };
 
-const getParsers = (format, content) => {
+const getParser = (format, content) => {
   if (!has(parsers, format)) {
     throw new Error('Unknown format: accept "plain", "nested", "json"');
   }
@@ -25,7 +25,7 @@ const getParsers = (format, content) => {
 const parse = (pathToFile) => {
   const contentFromPath = fs.readFileSync(pathToFile, 'utf-8');
   const format = formatFromPath(pathToFile);
-  return getParsers(format, contentFromPath);
+  return getParser(format, contentFromPath);
 };
 
 export default parse;

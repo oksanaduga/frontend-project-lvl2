@@ -1,17 +1,17 @@
 import { isPlainObject, isArray, reduce } from 'lodash';
 
-const render = (diff) => {
-  const iter = (arr, depth) => arr.reduce((acc, { key, value, sign }) => {
+const insert = (diff) => {
+  const iter = (collection, depth) => collection.reduce((acc, { key, value, sign }) => {
     // indent is 2 spaces each depth lvl
     // and 2 spaces for the sign each depth lvl
     const indent = (depth * 2) + (depth - 1) * 2;
     const spaces = ' '.repeat(indent);
-    const signSym = sign === undefined ? ' ' : sign;
-    let valueStr = '';
+    const signSymbol = sign === undefined ? ' ' : sign;
+    let outputLine = '';
 
     if (isArray(value)) {
       const lines = iter(value, depth + 1);
-      valueStr = `{\n${lines}${spaces}  }`;
+      outputLine = `{\n${lines}${spaces}  }`;
     } else if (isPlainObject(value)) {
       const endingSpaces = ' '.repeat(indent + 2);
 
@@ -20,15 +20,15 @@ const render = (diff) => {
         return `${objAcc}${objSpaces}${k}: ${v}\n`;
       }, '');
 
-      valueStr = `{\n${keyValueLines}${endingSpaces}}`;
+      outputLine = `{\n${keyValueLines}${endingSpaces}}`;
     } else {
-      valueStr = value;
+      outputLine = value;
     }
 
-    return `${acc}${spaces}${signSym} ${key}: ${valueStr}\n`;
+    return `${acc}${spaces}${signSymbol} ${key}: ${outputLine}\n`;
   }, '');
 
   return `{\n${iter(diff, 1)}}\n`;
 };
 
-export default render;
+export default insert;

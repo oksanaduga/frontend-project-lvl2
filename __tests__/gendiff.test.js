@@ -11,11 +11,11 @@ test.each([
     'jsonFormat.json'],
   ['beforeNested.yml', 'afterNested.yml', 'plain',
     'plainFormat.txt'],
-  ['beforeNested.ini', 'afterNested.ini', 'nested',
+  ['beforeNested.ini', 'afterNested.ini', 'insert',
     'nestedFormatIni.txt'],
-])('gendiff(%o, %o, %s, %s)', (before, after, format, pathToFile) => {
-  const beforePath = getFixturePath(before);
-  const afterPath = getFixturePath(after);
+])('gendiff(%o, %o, %s, %s)', (from, to, format, pathToFile) => {
+  const fromPath = getFixturePath(from);
+  const toPath = getFixturePath(to);
   const expected = readFile(pathToFile, 'utf8');
-  expect(gendiff(beforePath, afterPath, format)).toBe(expected);
+  expect(gendiff(fromPath, toPath, format)).toBe(expected);
 });

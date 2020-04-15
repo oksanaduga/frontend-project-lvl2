@@ -51,9 +51,9 @@ const buildChangeRecord = (diffs, settingName) => {
 };
 
 const plain = (diff) => {
-  const renderDiff = (arr, currentKey = '') => {
-    const keys = getUniqKeys(arr);
-    const diffByKey = groupBy(arr, ({ key }) => key);
+  const renderDiff = (collection, currentKey = '') => {
+    const keys = getUniqKeys(collection);
+    const diffByKey = groupBy(collection, ({ key }) => key);
 
     return keys.reduce((acc, key) => {
       const diffs = diffByKey[key];

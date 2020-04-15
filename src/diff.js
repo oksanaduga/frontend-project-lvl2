@@ -1,35 +1,55 @@
-import { has, isPlainObject } from 'lodash';
+import {
+  has, isPlainObject, union, keys, flatten,
+} from 'lodash';
 
-const changed = (key, from, to) => [
-  { sign: '+', key, value: to },
-  { sign: '-', key, value: from },
-];
 
+const change = (key, addValue, removeValue) => {
+  const nodesChange = [{ sign: '+', key, value: addValue },
+    { sign: '-', key, value: removeValue },
+  ];
+  return nodesChange;
+};
 const add = (key, value) => ({ sign: '+', key, value });
+
 const remove = (key, value) => ({ sign: '-', key, value });
+
 const notChanged = (key, value) => ({ key, value });
 
 const diffFromTwo = (key, from, to, findNestedDiff) => {
-  if (isPlainObject(from) && isPlainObject(to)) {
-    const nestedDiff = findNestedDiff(from, to);
-    return [notChanged(key, nestedDiff)];
-  }
-  if (from === to) {
-    return [notChanged(key, to)];
-  }
-  return changed(key, from, to);
+  const nestedDiff = findNestedDiff(from, to);
+  return notChanged(key, nestedDiff);
 };
 
-const diffFromOne = (key, from, to) => (from ? remove(key, from) : add(key, to));
+const isNodeAdd = (from, to, key) => has(to, key) && !has(from, key);
+
+const isNodeDelete = (from, to, key) => has(from, key) && !has(to, key);
+
+const isNodeChange = (from, to, key) => (has(to, key) && has(from, key))
+  && (to[key] !== from[key]);
+
+const isNodeHaveChildren = (from, to, key) => isPlainObject(from[key])
+&& isPlainObject(to[key]);
+
 
 const diff = (objBefore, objAfter) => {
-  const arrOfKeys = Object.keys({ ...objBefore, ...objAfter });
-  return arrOfKeys.reduce((acc, key) => {
-    if (has(objBefore, key) && has(objAfter, key)) {
-      return [...acc, ...diffFromTwo(key, objBefore[key], objAfter[key], diff)];
+  const uniqKeys = union(keys(objBefore), keys(objAfter));
+  const difference = uniqKeys.map((key) => {
+    if (isNodeHaveChildren(objBefore, objAfter, key)) {
+      return [diffFromTwo(key, objBefore[key], objAfter[key], diff)];
     }
-    return [...acc, diffFromOne(key, objBefore[key], objAfter[key])];
-  }, []);
+    if (isNodeChange(objBefore, objAfter, key)) {
+      return flatten(change(key, objAfter[key], objBefore[key]));
+    }
+    if (isNodeAdd(objBefore, objAfter, key)) {
+      return [add(key, objAfter[key])];
+    }
+    if (isNodeDelete(objBefore, objAfter, key)) {
+      return [remove(key, objBefore[key])];
+    }
+    return notChanged(key, objAfter[key]);
+  });
+  return flatten(difference);
 };
+
 
 export default diff;
