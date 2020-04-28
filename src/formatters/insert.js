@@ -1,4 +1,4 @@
-import { isPlainObject, isArray, reduce } from 'lodash';
+import { isPlainObject, reduce } from 'lodash';
 
 const insert = (diff) => {
   const iter = (collection, depth) => collection.reduce((acc, el) => {

@@ -1,5 +1,5 @@
 import {
-  isArray, groupBy, compact, template, isPlainObject,
+  groupBy, compact, template, isPlainObject,
 } from 'lodash';
 
 const getUniqKeys = (diff) => {
