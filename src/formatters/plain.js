@@ -7,8 +7,9 @@ const getUniqKeys = (diff) => {
   return Array.from(set);
 };
 
-const isChanged = (diffs) => diffs.some(({ sign }) => sign);
-const hasNestedDiff = (diffs) => diffs.some(({ value }) => isArray(value));
+const isChanged = (diffs) => diffs.some(({ description }) => description);
+// const hasNestedDiff = (diffs) => diffs.some(({ value }) => isArray(value));
+const hasNestedDiff = (diffs) => diffs.some(({ children }) => children !== undefined);
 
 const templates = {
   changed: template("Property '<%= settingName %>' was changed from <%= from %> to <%= to %>"),
@@ -33,14 +34,14 @@ const buildChangeRecord = (diffs, settingName) => {
 
   if (diffs.length > 1) {
     action = 'changed';
-    diffs.forEach(({ sign, value }) => {
-      if (sign === '-') {
+    diffs.forEach(({ description, value }) => {
+      if (description === '-') {
         from = formatValue(value);
       } else {
         to = formatValue(value);
       }
     });
-  } else if (diffs[0].sign === '-') {
+  } else if (diffs[0].description === '-') {
     action = 'deleted';
   } else {
     action = 'added';
@@ -65,7 +66,7 @@ const plain = (diff) => {
       }
 
       if (hasNestedDiff(diffs)) {
-        return [...acc, ...renderDiff(diffs[0].value, fullKey)];
+        return [...acc, ...renderDiff(diffs[0].children, fullKey)];
       }
 
       return acc;

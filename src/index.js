@@ -1,5 +1,5 @@
 import has from 'lodash';
-import parse from './parse';
+import { defineFormat, readContent, parse } from './parse';
 import diff from './diff';
 import { plain, insert, json } from './formatters';
 
@@ -17,9 +17,13 @@ const getFormat = (format, content) => {
 };
 
 const gendiff = (fromPath, toPath, format = 'json') => {
-  const fromContent = parse(fromPath);
-  const toContent = parse(toPath);
-  const difference = diff(fromContent, toContent);
+  const contentFrom = readContent(fromPath);
+  const contentTo = readContent(toPath);
+  const formatContentFrom = defineFormat(fromPath);
+  const formatContentTo = defineFormat(toPath);
+  const parseContentFrom = parse(contentFrom, formatContentFrom);
+  const parseContentTo = parse(contentTo, formatContentTo);
+  const difference = diff(parseContentFrom, parseContentTo);
   return getFormat(format, difference);
 };
 

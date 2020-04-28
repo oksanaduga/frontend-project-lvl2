@@ -12,7 +12,7 @@ test.each([
   ['beforeNested.yml', 'afterNested.yml', 'plain',
     'plainFormat.txt'],
   ['beforeNested.ini', 'afterNested.ini', 'insert',
-    'nestedFormat.txt'],
+    'insertFormat.txt'],
 ])('gendiff(%o, %o, %s, %s)', (from, to, format, pathToFile) => {
   const fromPath = getFixturePath(from);
   const toPath = getFixturePath(to);

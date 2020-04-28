@@ -1,30 +1,29 @@
 import fs from 'fs';
+import path from 'path';
 import yaml from 'js-yaml';
 import ini from 'ini';
 import has from 'lodash';
 
-const formatFromPath = (path) => {
-  const defineIndexFormat = path.lastIndexOf('.') + 1;
-  const nameFormat = path.substr(defineIndexFormat);
-  return nameFormat;
-};
 
-const parsers = {
-  json: JSON.parse,
-  yml: yaml.safeLoad,
-  ini: ini.parse,
-};
-
-const getParser = (format, content) => format(content);
-
-const parse = (pathToFile) => {
-  const contentFromPath = fs.readFileSync(pathToFile, 'utf-8');
-  const pathFormat = formatFromPath(pathToFile);
-  const format = parsers[pathFormat];
+const defineFormat = (pathToFile) => {
+  const parsers = {
+    '.json': JSON.parse,
+    '.yml': yaml.safeLoad,
+    '.ini': ini.parse,
+  };
+  const format = path.extname(pathToFile);
+  const defineFormatOfParse = parsers[format];
   if (!has(parsers, format)) {
-    throw new Error('Unknown format: accept "plain", "nested", "json"');
+    throw new Error('Unknown format: accept "plain", "insert", "json"');
   }
-  return getParser(format, contentFromPath);
+  return defineFormatOfParse;
 };
 
-export default parse;
+const readContent = (pathToFile) => fs.readFileSync(pathToFile, 'utf-8');
+
+const parse = (content, format) => {
+  const parseInFormat = format(content);
+  return parseInFormat;
+};
+
+export { defineFormat, readContent, parse };

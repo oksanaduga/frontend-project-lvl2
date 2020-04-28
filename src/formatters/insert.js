@@ -1,16 +1,17 @@
 import { isPlainObject, isArray, reduce } from 'lodash';
 
 const insert = (diff) => {
-  const iter = (collection, depth) => collection.reduce((acc, { key, value, sign }) => {
+  const iter = (collection, depth) => collection.reduce((acc, el) => {
     // indent is 2 spaces each depth lvl
-    // and 2 spaces for the sign each depth lvl
+    // and 2 spaces for the description each depth lvl
+    const { key, value, description } = el;
     const indent = (depth * 2) + (depth - 1) * 2;
     const spaces = ' '.repeat(indent);
-    const signSymbol = sign === undefined ? ' ' : sign;
+    const descriptionSymbol = description === undefined ? ' ' : description;
     let outputLine = '';
 
-    if (isArray(value)) {
-      const lines = iter(value, depth + 1);
+    if (el.children !== undefined) {
+      const lines = iter(el.children, depth + 1);
       outputLine = `{\n${lines}${spaces}  }`;
     } else if (isPlainObject(value)) {
       const endingSpaces = ' '.repeat(indent + 2);
@@ -25,7 +26,7 @@ const insert = (diff) => {
       outputLine = value;
     }
 
-    return `${acc}${spaces}${signSymbol} ${key}: ${outputLine}\n`;
+    return `${acc}${spaces}${descriptionSymbol} ${key}: ${outputLine}\n`;
   }, '');
 
   return `{\n${iter(diff, 1)}}\n`;
