@@ -1,15 +1,6 @@
 import {
-  groupBy, compact, template, isPlainObject,
+  compact, template, isPlainObject, has,
 } from 'lodash';
-
-const getUniqKeys = (diff) => {
-  const set = new Set(diff.map(({ key }) => key));
-  return Array.from(set);
-};
-
-const isChanged = (diffs) => diffs.some(({ description }) => description);
-// const hasNestedDiff = (diffs) => diffs.some(({ value }) => isArray(value));
-const hasNestedDiff = (diffs) => diffs.some(({ children }) => children !== undefined);
 
 const templates = {
   changed: template("Property '<%= settingName %>' was changed from <%= from %> to <%= to %>"),
@@ -29,50 +20,34 @@ const formatValue = (value) => {
   return value;
 };
 
-const buildChangeRecord = (diffs, settingName) => {
+const buildChangeRecord = (diff, settingName) => {
   let action; let from; let to;
 
-  if (diffs.length > 1) {
+  if (diff.description === 'change') {
     action = 'changed';
-    diffs.forEach(({ description, value }) => {
-      if (description === '-') {
-        from = formatValue(value);
-      } else {
-        to = formatValue(value);
-      }
-    });
-  } else if (diffs[0].description === '-') {
+    from = formatValue(diff.from);
+    to = formatValue(diff.to);
+  } else if (diff.description === 'delete') {
     action = 'deleted';
   } else {
     action = 'added';
-    to = formatValue(diffs[0].value);
+    to = formatValue(diff.value);
   }
-
   return templates[action]({ settingName, from, to });
 };
 
 const plain = (diff) => {
-  const renderDiff = (collection, currentKey = '') => {
-    const keys = getUniqKeys(collection);
-    const diffByKey = groupBy(collection, ({ key }) => key);
-
-    return keys.reduce((acc, key) => {
-      const diffs = diffByKey[key];
-      const fullKey = compact([currentKey, key]).join('.');
-
-      if (isChanged(diffs)) {
-        const changeRecord = buildChangeRecord(diffs, fullKey);
-        return [...acc, changeRecord];
-      }
-
-      if (hasNestedDiff(diffs)) {
-        return [...acc, ...renderDiff(diffs[0].children, fullKey)];
-      }
-
-      return acc;
-    }, []);
-  };
-
+  const renderDiff = (collection, currentKey = '') => collection.reduce((acc, el) => {
+    const fullKey = compact([currentKey, el.key]).join('.');
+    if (has(el, 'children')) {
+      return [...acc, ...renderDiff(el.children, fullKey)];
+    }
+    if (el.description !== 'not change') {
+      const changeRecord = buildChangeRecord(el, fullKey);
+      return [...acc, changeRecord];
+    }
+    return acc;
+  }, []);
   return `${renderDiff(diff).join('\n')}\n`;
 };
 

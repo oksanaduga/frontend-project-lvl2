@@ -1,5 +1,5 @@
 import {
-  has, isPlainObject, union, keys, flatten,
+  has, isPlainObject, union, keys,
 } from 'lodash';
 
 const nodeNestedDisplay = (key, from, to, findNestedDiff) => {
@@ -22,20 +22,22 @@ const diff = (objBefore, objAfter) => {
   const uniqKeys = union(keys(objBefore), keys(objAfter));
   const difference = uniqKeys.map((key) => {
     if (isNodeAdded(objBefore, objAfter, key)) {
-      return { description: '+', key, value: objAfter[key] };
+      return { description: 'add', key, value: objAfter[key] };
     }
     if (isNodeRemoved(objBefore, objAfter, key)) {
-      return { description: '-', key, value: objBefore[key] };
+      return { description: 'delete', key, value: objBefore[key] };
     }
     if (isNodeHaveChildren(objBefore, objAfter, key)) {
       return nodeNestedDisplay(key, objBefore[key], objAfter[key], diff);
     }
     if (isNodeChanged(objBefore, objAfter, key)) {
-      return [{ description: '+', key, value: objAfter[key] }, { description: '-', key, value: objBefore[key] }];
+      return {
+        description: 'change', key, from: objBefore[key], to: objAfter[key],
+      };
     }
-    return { key, value: objAfter[key] };
+    return { description: 'not change', key, value: objAfter[key] };
   });
-  return flatten(difference);
+  return difference;
 };
 
 
