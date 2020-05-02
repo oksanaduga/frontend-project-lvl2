@@ -10,14 +10,17 @@ const defineSign = (description) => {
   return descriptionSign[description];
 };
 
-const nestedValue = (value, indent) => {
-  const endingSpaces = ' '.repeat(indent + 2);
+const buildValue = (value, indent) => {
+  if (isPlainObject(value)) {
+    const endingSpaces = ' '.repeat(indent + 2);
 
-  const keyValueLines = reduce(value, (objAcc, v, k) => {
-    const objSpaces = ' '.repeat(indent + 6);
-    return `${objAcc}${objSpaces}${k}: ${v}\n`;
-  }, '');
-  return `{\n${keyValueLines}${endingSpaces}}`;
+    const keyValueLines = reduce(value, (objAcc, v, k) => {
+      const objSpaces = ' '.repeat(indent + 6);
+      return `${objAcc}${objSpaces}${k}: ${v}\n`;
+    }, '');
+    return `{\n${keyValueLines}${endingSpaces}}`;
+  }
+  return value;
 };
 
 const insert = (diff) => {
@@ -36,19 +39,13 @@ const insert = (diff) => {
       const all = `${spaces}${descriptionSymbol} ${key}: `;
       outputLine = `${all}{\n${lines}${spaces}  }\n`;
     } else if (isArray(descriptionSymbol)) {
-      const valueFrom = isPlainObject(el.from)
-        ? nestedValue(el.from, indent)
-        : el.from;
-      const valueTo = isPlainObject(el.to)
-        ? nestedValue(el.to, indent)
-        : el.to;
+      const valueFrom = buildValue(el.from, indent);
+      const valueTo = buildValue(el.to, indent);
       const changeFrom = `${spaces}${descriptionSymbol[0]} ${key}: ${valueFrom}`;
       const changeTo = `${spaces}${descriptionSymbol[1]} ${key}: ${valueTo}`;
       outputLine = `${changeFrom}\n${changeTo}\n`;
     } else {
-      const value = isPlainObject(el.value)
-        ? nestedValue(el.value, indent)
-        : el.value;
+      const value = buildValue(el.value, indent);
       outputLine = `${spaces}${descriptionSymbol} ${key}: ${value}\n`;
     }
     return `${acc}${outputLine}`;
