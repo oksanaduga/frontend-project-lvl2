@@ -1,5 +1,7 @@
+import fs from 'fs';
+import path from 'path';
 import has from 'lodash';
-import { defineFormat, readContent, parse } from './parse';
+import parse from './parse';
 import diff from './diff';
 import { plain, insert, json } from './formatters';
 
@@ -16,6 +18,13 @@ const getFormat = (format, content) => {
   return acceptFormat[format](content);
 };
 
+const defineFormat = (pathToFile) => {
+  const format = path.extname(pathToFile);
+  return format;
+};
+
+const readContent = (pathToFile) => fs.readFileSync(pathToFile, 'utf-8');
+
 const gendiff = (fromPath, toPath, format = 'json') => {
   const contentFrom = readContent(fromPath);
   const contentTo = readContent(toPath);
@@ -27,4 +36,4 @@ const gendiff = (fromPath, toPath, format = 'json') => {
   return getFormat(format, difference);
 };
 
-export default gendiff;
+export { readContent, defineFormat, gendiff };
