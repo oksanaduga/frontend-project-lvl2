@@ -3,10 +3,9 @@ import path from 'path';
 import has from 'lodash';
 import parse from './parse';
 import diff from './diff';
-import { plain, insert, json } from './formatters';
+import { plain, json } from './formatters';
 
 const acceptFormat = {
-  insert,
   plain,
   json,
 };
@@ -30,9 +29,9 @@ const gendiff = (fromPath, toPath, format = 'json') => {
   const contentTo = readContent(toPath);
   const formatContentFrom = defineFormat(fromPath);
   const formatContentTo = defineFormat(toPath);
-  const parseContentFrom = parse(contentFrom, formatContentFrom);
-  const parseContentTo = parse(contentTo, formatContentTo);
-  const difference = diff(parseContentFrom, parseContentTo);
+  const configBefore = parse(contentFrom, formatContentFrom);
+  const configAfter = parse(contentTo, formatContentTo);
+  const difference = diff(configBefore, configAfter);
   return getFormat(format, difference);
 };
 
