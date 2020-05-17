@@ -3,18 +3,20 @@ import path from 'path';
 import has from 'lodash';
 import parse from './parse';
 import diff from './diff';
-import { plain, json } from './formatters';
+import { plain, json, objectFormatter } from './formatters';
 
-const acceptFormat = {
+const formatters = {
   plain,
   json,
+  object: objectFormatter,
 };
 
-const getFormat = (format, content) => {
-  if (!has(acceptFormat, format)) {
-    throw new Error('Unknown format: accept "plain", "insert", "json"');
+const formatOutput = (formatName, content) => {
+  if (!has(formatters, formatName)) {
+    throw new Error('Unknown format: accept "plain", "object", "json"');
   }
-  return acceptFormat[format](content);
+  const formatter = formatters[formatName];
+  return formatter(content);
 };
 
 const defineFormat = (pathToFile) => {
@@ -32,7 +34,8 @@ const gendiff = (fromPath, toPath, format = 'json') => {
   const configBefore = parse(contentFrom, formatContentFrom);
   const configAfter = parse(contentTo, formatContentTo);
   const difference = diff(configBefore, configAfter);
-  return getFormat(format, difference);
+  console.log(JSON.stringify(difference, null, 2));
+  return formatOutput(format, difference);
 };
 
-export { readContent, defineFormat, gendiff };
+export default gendiff;
