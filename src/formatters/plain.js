@@ -50,27 +50,4 @@ const plain = (diffTree) => {
   return `${iter(diffTree)}\n`;
 };
 
-
-/*
-функция принимает дерево различий имеющее вид
-
-[
-  { settingName: 'k', from: 'fwe', to: false },
-  { settingName: 'l', to: 123 },
-  { settingName: 'k', from: { n: 'fsdf' }, to: 'we' },
-  { settingName: 'k', children: [
-    { settingName: 'qw', from: 3, to: 'rwg' },
-  ] },
-]
-
-и выводит строковое описание каждой ноды
-имя настройки - действие (состояние) - содержание
-Property 'common.setting2' was deleted
-Property 'common.setting3' was changed from true to [complex value]
-Property 'common.setting6.ops' was added with value: 'vops'
-Property 'common.follow' was added with value: false
-
-*/
-
-
 export default plain;
