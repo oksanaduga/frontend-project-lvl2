@@ -1,4 +1,4 @@
-import { isPlainObject, has } from 'lodash';
+import { isPlainObject } from 'lodash';
 
 const formatValue = (value) => {
   if (isPlainObject(value)) {
@@ -12,42 +12,36 @@ const formatValue = (value) => {
   return value;
 };
 
-
-const isRemove = (node) => !has(node, 'children')
-                            && !has(node, 'to');
-const isAdd = (node) => !has(node, 'children')
-                         && !has(node, 'from');
-const isHaveChildren = (node) => has(node, 'children');
-
+const addString = (res) => `${res}\n`;
 
 const plain = (diffTree) => {
-  const iter = (tree, currentKey = '') => {
-    const output = tree.reduce((acc, node) => {
-      const { settingName, from, to } = node;
-      if (isRemove(node)) {
-        const description = `Property '${currentKey}${settingName}' was deleted`;
-        return [...acc, description];
+  const iter = (diff, currentKey = '') => {
+    const outputArr = diff.reduce((acc, node) => {
+      const {
+        settingName,
+        type,
+        from,
+        to,
+        children,
+      } = node;
+      const line = `Property '${currentKey}${settingName}'`;
+      switch (type) {
+        case 'added':
+          return [...acc, `${line} was added with value: ${formatValue(to)}`];
+        case 'removed':
+          return [...acc, `${line} was deleted`];
+        case 'change':
+          return [...acc, `${line} was changed from ${formatValue(from)} to ${formatValue(to)}`];
+        case 'scope':
+          return [...acc, iter(children, `${currentKey}${settingName}.`)];
+        default:
+          return acc;
       }
-      if (isAdd(node)) {
-        const descriptionValue = formatValue(to);
-        const description = `Property '${currentKey}${settingName}' was added with value: ${descriptionValue}`;
-        return [...acc, description];
-      }
-      if (isHaveChildren(node)) {
-        const currentK = `${currentKey}${settingName}.`;
-        return [...acc, iter(node.children, currentK)];
-      }
-      if (from === to) {
-        return acc;
-      }
-      const descriptionValueFrom = formatValue(from);
-      const descriptionValueTo = formatValue(to);
-      const description = `Property '${currentKey}${settingName}' was changed from ${descriptionValueFrom} to ${descriptionValueTo}`;
-      return [...acc, description];
     }, []);
-    return output.join('\n');
+    const outputStr = outputArr.join('\n');
+    return outputStr;
   };
-  return `${iter(diffTree)}\n`;
+  return addString(iter(diffTree));
 };
 
 export default plain;

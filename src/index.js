@@ -34,7 +34,6 @@ const gendiff = (fromPath, toPath, format = 'json') => {
   const configBefore = parse(contentFrom, formatContentFrom);
   const configAfter = parse(contentTo, formatContentTo);
   const difference = diff(configBefore, configAfter);
-  console.log(JSON.stringify(difference, null, 2));
   return formatOutput(format, difference);
 };
 
