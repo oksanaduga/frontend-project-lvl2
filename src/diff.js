@@ -18,7 +18,7 @@ const defineType = (key, from, to) => {
     return 'scope';
   }
   if (from[key] === to[key]) {
-    return 'not change';
+    return 'notChange';
   }
   return 'change';
 };
@@ -68,7 +68,7 @@ export default diff;
 дерево возвращает разницу в виде объекта
 
 [
-  { settingName: 'k', type: ' not change', from: 'fwe', to: 'fwe', children: [] },
+  { settingName: 'k', type: ' notChange', from: 'fwe', to: 'fwe', children: [] },
   { settingName: 'l', type: 'added', to: 123, children: []  },
   { settingName: 'l', type: 'removed', from: 456, children: []  },
   { settingName: 'k', type: 'change', from: { n: 'fsdf' }, to: 'we', children: [] },
