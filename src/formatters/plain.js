@@ -12,8 +12,6 @@ const formatValue = (value) => {
   return value;
 };
 
-const addString = (res) => `${res}\n`;
-
 const plain = (diffTree) => {
   const iter = (diff, currentKey = '') => {
     const outputArr = diff.reduce((acc, node) => {
@@ -41,7 +39,7 @@ const plain = (diffTree) => {
     const outputStr = outputArr.join('\n');
     return outputStr;
   };
-  return addString(iter(diffTree));
+  return iter(diffTree);
 };
 
 export default plain;

@@ -2,13 +2,11 @@ import { isPlainObject, keys, values } from 'lodash';
 
 const typeValue = (value, indent) => {
   if (isPlainObject(value)) {
-    const output = `{\n${indent.repeat(2)}${keys(value)}: ${values(value)}\n${indent}  }`;
+    const output = `{\n${indent}      ${keys(value)}: ${values(value)}\n${indent}  }`;
     return output;
   }
   return value;
 };
-
-const addString = (res) => `{\n${res}\n}\n`;
 
 const objectFormatter = (diffTree) => {
   const iter = (diff, depth = 1) => {
@@ -33,7 +31,7 @@ const objectFormatter = (diffTree) => {
     }, []);
     return output.join('\n');
   };
-  return addString(iter(diffTree));
+  return `{\n${iter(diffTree)}\n}`;
 };
 
 export default objectFormatter;
