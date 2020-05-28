@@ -2,19 +2,19 @@ import {
   has, isPlainObject, keys, union,
 } from 'lodash';
 
-const isAdd = (before, key) => !has(before, key);
-const isRemove = (after, key) => !has(after, key);
-const isHaveChildren = (before, after, key) => isPlainObject(before[key])
+const isAdded = (before, key) => !has(before, key);
+const isRemoved = (after, key) => !has(after, key);
+const hasChildrenChildren = (before, after, key) => isPlainObject(before[key])
                                                && isPlainObject(after[key]);
 
 const defineType = (key, from, to) => {
-  if (isAdd(from, key)) {
+  if (isAdded(from, key)) {
     return 'added';
   }
-  if (isRemove(to, key)) {
+  if (isRemoved(to, key)) {
     return 'removed';
   }
-  if (isHaveChildren(from, to, key)) {
+  if (hasChildrenChildren(from, to, key)) {
     return 'scope';
   }
   if (from[key] === to[key]) {
@@ -23,24 +23,25 @@ const defineType = (key, from, to) => {
   return 'change';
 };
 
-const diff = (configBefore, configAfter) => {
+const genDiff = (configBefore, configAfter) => {
   const settingNames = union(keys(configBefore), keys(configAfter));
-  const difference = settingNames.reduce((acc, settingName) => {
+  const difference = settingNames.map((settingName) => {
     const type = defineType(settingName, configBefore, configAfter);
-    return [...acc, {
+    const children = type === 'scope'
+      ? genDiff(configBefore[settingName], configAfter[settingName])
+      : [];
+    return {
       settingName,
       type,
       from: configBefore[settingName],
       to: configAfter[settingName],
-      children: type === 'scope'
-        ? diff(configBefore[settingName], configAfter[settingName])
-        : [],
-    }];
-  }, []);
+      children,
+    };
+  });
   return difference;
 };
 
-export default diff;
+export default genDiff;
 
 
 /*
