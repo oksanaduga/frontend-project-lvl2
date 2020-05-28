@@ -1,26 +1,12 @@
 import fs from 'fs';
 import path from 'path';
-import has from 'lodash';
 import parse from './parse';
-import diff from './diff';
-import { plain, json, objectFormatter } from './formatters';
-
-const formatters = {
-  plain,
-  json,
-  object: objectFormatter,
-};
-
-const formatOutput = (formatName, content) => {
-  if (!has(formatters, formatName)) {
-    throw new Error('Unknown format: accept "plain", "object", "json"');
-  }
-  const formatter = formatters[formatName];
-  return formatter(content);
-};
+import genDiff from './genDiff';
+import formatOutput from './formatters/index.js';
 
 const defineFormat = (pathToFile) => {
-  const format = path.extname(pathToFile);
+  const cropLine = path.extname(pathToFile);
+  const format = cropLine.substring(1);
   return format;
 };
 
@@ -33,8 +19,9 @@ const gendiff = (fromPath, toPath, format = 'json') => {
   const formatContentTo = defineFormat(toPath);
   const configBefore = parse(contentFrom, formatContentFrom);
   const configAfter = parse(contentTo, formatContentTo);
-  const difference = diff(configBefore, configAfter);
-  return formatOutput(format, difference);
+  const difference = genDiff(configBefore, configAfter);
+  const formatter = formatOutput(format);
+  return `${formatter(difference)}\n`;
 };
 
 export default gendiff;
