@@ -4,12 +4,12 @@ import ini from 'ini';
 
 const parse = (content, format) => {
   const parsers = {
-    '.json': JSON.parse,
-    '.yml': yaml.safeLoad,
-    '.ini': ini.parse,
+    json: JSON.parse,
+    yml: yaml.safeLoad,
+    ini: ini.parse,
   };
-  const parseInFormat = parsers[format];
-  return parseInFormat(content);
+  const parser = parsers[format];
+  return parser(content);
 };
 
 export default parse;
