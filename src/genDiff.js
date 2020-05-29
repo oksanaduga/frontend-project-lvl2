@@ -4,39 +4,45 @@ import {
 
 const isAdded = (before, key) => !has(before, key);
 const isRemoved = (after, key) => !has(after, key);
-const hasChildrenChildren = (before, after, key) => isPlainObject(before[key])
-                                               && isPlainObject(after[key]);
-
-const defineType = (key, from, to) => {
-  if (isAdded(from, key)) {
-    return 'added';
-  }
-  if (isRemoved(to, key)) {
-    return 'removed';
-  }
-  if (hasChildrenChildren(from, to, key)) {
-    return 'scope';
-  }
-  if (from[key] === to[key]) {
-    return 'notChange';
-  }
-  return 'change';
-};
+const hasChildren = (before, after, key) => isPlainObject(before[key])
+                                            && isPlainObject(after[key]);
+const isntChanged = (before, after, key) => before[key] === after[key];
 
 const genDiff = (configBefore, configAfter) => {
   const settingNames = union(keys(configBefore), keys(configAfter));
   const difference = settingNames.map((settingName) => {
-    const type = defineType(settingName, configBefore, configAfter);
-    const children = type === 'scope'
-      ? genDiff(configBefore[settingName], configAfter[settingName])
-      : [];
-    return {
+    const node = {
       settingName,
-      type,
-      from: configBefore[settingName],
-      to: configAfter[settingName],
-      children,
+      type: '-',
+      from: '-',
+      to: '-',
+      children: [],
     };
+    if (isAdded(configBefore, settingName)) {
+      node.type = 'added';
+      node.to = configAfter[settingName];
+      return node;
+    }
+    if (isRemoved(configAfter, settingName)) {
+      node.type = 'removed';
+      node.from = configBefore[settingName];
+      return node;
+    }
+    if (hasChildren(configBefore, configAfter, settingName)) {
+      node.type = 'scope';
+      node.children = genDiff(configBefore[settingName], configAfter[settingName]);
+      return node;
+    }
+    if (isntChanged(configBefore, configAfter, settingName)) {
+      node.type = 'notChange';
+      node.from = configBefore[settingName];
+      node.to = configAfter[settingName];
+      return node;
+    }
+    node.type = 'change';
+    node.from = configBefore[settingName];
+    node.to = configAfter[settingName];
+    return node;
   });
   return difference;
 };
