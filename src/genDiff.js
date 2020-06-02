@@ -2,85 +2,59 @@ import {
   has, isPlainObject, keys, union,
 } from 'lodash';
 
-const isAdded = (before, key) => !has(before, key);
-const isRemoved = (after, key) => !has(after, key);
-const hasChildren = (before, after, key) => isPlainObject(before[key])
-                                            && isPlainObject(after[key]);
-const isntChanged = (before, after, key) => before[key] === after[key];
-
 const genDiff = (configBefore, configAfter) => {
   const settingNames = union(keys(configBefore), keys(configAfter));
   const difference = settingNames.map((settingName) => {
+    if (!has(configBefore, settingName)) {
+      const node = {
+        settingName,
+        type: 'added',
+        from: 'not contain',
+        to: configAfter[settingName],
+        children: [],
+      };
+      return node;
+    }
+    if (!has(configAfter, settingName)) {
+      const node = {
+        settingName,
+        type: 'removed',
+        from: configBefore[settingName],
+        to: 'not contain',
+        children: [],
+      };
+      return node;
+    }
+    if (isPlainObject(configBefore[settingName]) && isPlainObject(configAfter[settingName])) {
+      const node = {
+        settingName,
+        type: 'scope',
+        from: 'not contain',
+        to: 'not contain',
+        children: genDiff(configBefore[settingName], configAfter[settingName]),
+      };
+      return node;
+    }
+    if (configBefore[settingName] === configAfter[settingName]) {
+      const node = {
+        settingName,
+        type: 'notChange',
+        from: configBefore[settingName],
+        to: configAfter[settingName],
+        children: [],
+      };
+      return node;
+    }
     const node = {
       settingName,
-      type: '-',
-      from: '-',
-      to: '-',
+      type: 'change',
+      from: configBefore[settingName],
+      to: configAfter[settingName],
       children: [],
     };
-    if (isAdded(configBefore, settingName)) {
-      node.type = 'added';
-      node.to = configAfter[settingName];
-      return node;
-    }
-    if (isRemoved(configAfter, settingName)) {
-      node.type = 'removed';
-      node.from = configBefore[settingName];
-      return node;
-    }
-    if (hasChildren(configBefore, configAfter, settingName)) {
-      node.type = 'scope';
-      node.children = genDiff(configBefore[settingName], configAfter[settingName]);
-      return node;
-    }
-    if (isntChanged(configBefore, configAfter, settingName)) {
-      node.type = 'notChange';
-      node.from = configBefore[settingName];
-      node.to = configAfter[settingName];
-      return node;
-    }
-    node.type = 'change';
-    node.from = configBefore[settingName];
-    node.to = configAfter[settingName];
     return node;
   });
   return difference;
 };
 
 export default genDiff;
-
-
-/*
-нужно сравнить данные
-вернуть дерево различий
-
-дано конфигурация из одного файла в виде объекта
-конфигурация второго файла в виде объекта
-
-конфигурация имеет вид
-{
-  k: 'fwe',
-  h: 123,
-  l: {
-    h: true,
-    r: 'ewe3',
-    ko: {
-      qw: 1,
-    }
-  },
- }
-
-у второй конфигурации такая же структура
-
-дерево возвращает разницу в виде объекта
-
-[
-  { settingName: 'k', type: ' notChange', from: 'fwe', to: 'fwe', children: [] },
-  { settingName: 'l', type: 'added', to: 123, children: []  },
-  { settingName: 'l', type: 'removed', from: 456, children: []  },
-  { settingName: 'k', type: 'change', from: { n: 'fsdf' }, to: 'we', children: [] },
-  { settingName: 'k', type: 'scope',children: [
-    { settingName: 'qw', type: 'setting', from: 3, to: 'rwg' },
-  ] },
-]
-*/
