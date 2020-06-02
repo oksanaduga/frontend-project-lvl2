@@ -1,11 +1,11 @@
 import { isPlainObject, keys, values } from 'lodash';
 
 const determineValueType = (value, indent) => {
-  if (isPlainObject(value)) {
-    const output = `{\n${indent}      ${keys(value)}: ${values(value)}\n${indent}  }`;
-    return output;
+  if (!isPlainObject(value)) {
+    return value;
   }
-  return value;
+  const output = `{\n${indent}      ${keys(value)}: ${values(value)}\n${indent}  }`;
+  return output;
 };
 
 const objectFormatter = (diffTree) => {
