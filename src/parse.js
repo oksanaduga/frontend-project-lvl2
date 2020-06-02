@@ -8,8 +8,8 @@ const parse = (content, format) => {
     yml: yaml.safeLoad,
     ini: ini.parse,
   };
-  const parser = parsers[format];
-  return parser(content);
+  const parsing = parsers[format];
+  return parsing(content);
 };
 
 export default parse;

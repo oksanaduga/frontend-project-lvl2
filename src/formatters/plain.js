@@ -14,7 +14,7 @@ const formatValue = (value) => {
 
 const plain = (diffTree) => {
   const iter = (diff, currentKey = '') => {
-    const outputArr = diff.reduce((acc, node) => {
+    const outputLines = diff.map((node) => {
       const {
         settingName,
         type,
@@ -25,21 +25,19 @@ const plain = (diffTree) => {
       const line = `Property '${currentKey}${settingName}'`;
       switch (type) {
         case 'added':
-          return [...acc, `${line} was added with value: ${formatValue(to)}`];
+          return `${line} was added with value: ${formatValue(to)}\n`;
         case 'removed':
-          return [...acc, `${line} was deleted`];
+          return `${line} was deleted\n`;
         case 'change':
-          return [...acc, `${line} was changed from ${formatValue(from)} to ${formatValue(to)}`];
-        case 'scope':
-          return [...acc, iter(children, `${currentKey}${settingName}.`)];
+          return `${line} was changed from ${formatValue(from)} to ${formatValue(to)}\n`;
         default:
-          return acc;
+          return iter(children, `${currentKey}${settingName}.`);
       }
-    }, []);
-    const outputStr = outputArr.join('\n');
-    return outputStr;
+    });
+    return outputLines.join('');
   };
-  return iter(diffTree);
+  const output = iter(diffTree);
+  return output.trim();
 };
 
 export default plain;
