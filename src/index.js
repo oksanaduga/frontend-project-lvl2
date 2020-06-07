@@ -21,7 +21,7 @@ const gendiff = (fromPath, toPath, format = 'json') => {
   const configAfter = parse(contentTo, formatContentTo);
   const difference = genDiff(configBefore, configAfter);
   const formatter = formatOutput(format);
-  return `${formatter(difference)}\n`;
+  return formatter(difference);
 };
 
 export default gendiff;
