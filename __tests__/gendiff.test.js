@@ -4,7 +4,6 @@ import gendiff from '../src/index';
 
 const getFixturePath = (filename) => path.join(__dirname, '__fixtures__', filename);
 const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
-const addString = (a) => `${a}\n`;
 
 
 test.each([
@@ -17,6 +16,6 @@ test.each([
 ])('gendiff(%o, %o, %s, %s)', (from, to, format, pathToFile) => {
   const fromPath = getFixturePath(from);
   const toPath = getFixturePath(to);
-  const expected = readFile(pathToFile, 'utf8');
-  expect(addString(gendiff(fromPath, toPath, format))).toBe(expected);
+  const expected = readFile(pathToFile, 'utf8').trim();
+  expect(gendiff(fromPath, toPath, format)).toBe(expected);
 });

@@ -25,19 +25,19 @@ const plain = (diffTree) => {
       const line = `Property '${currentKey}${settingName}'`;
       switch (type) {
         case 'added':
-          return `${line} was added with value: ${formatValue(to)}\n`;
+          return `${line} was added with value: ${formatValue(to)}`;
         case 'removed':
-          return `${line} was deleted\n`;
+          return `${line} was deleted`;
         case 'change':
-          return `${line} was changed from ${formatValue(from)} to ${formatValue(to)}\n`;
+          return `${line} was changed from ${formatValue(from)} to ${formatValue(to)}`;
         default:
           return iter(children, `${currentKey}${settingName}.`);
       }
     });
-    return outputLines.join('');
+    return outputLines.join('\n');
   };
   const output = iter(diffTree);
-  return output.trim();
+  return output;
 };
 
 export default plain;

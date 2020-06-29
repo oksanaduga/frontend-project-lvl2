@@ -12,7 +12,7 @@ const defineFormat = (pathToFile) => {
 
 const readContent = (pathToFile) => fs.readFileSync(pathToFile, 'utf-8');
 
-const gendiff = (fromPath, toPath, format = 'json') => {
+const gendiff = (fromPath, toPath, form = 'json') => {
   const contentFrom = readContent(fromPath);
   const contentTo = readContent(toPath);
   const formatContentFrom = defineFormat(fromPath);
@@ -20,8 +20,8 @@ const gendiff = (fromPath, toPath, format = 'json') => {
   const configBefore = parse(contentFrom, formatContentFrom);
   const configAfter = parse(contentTo, formatContentTo);
   const difference = genDiff(configBefore, configAfter);
-  const formatter = formatOutput(format);
-  return formatter(difference);
+  const format = formatOutput(form);
+  return format(difference);
 };
 
 export default gendiff;
