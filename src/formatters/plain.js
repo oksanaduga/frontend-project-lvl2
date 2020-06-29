@@ -1,4 +1,4 @@
-import { isPlainObject } from 'lodash';
+import { isPlainObject, flattenDeep } from 'lodash';
 
 const formatValue = (value) => {
   if (isPlainObject(value)) {
@@ -30,14 +30,19 @@ const plain = (diffTree) => {
           return `${line} was deleted`;
         case 'change':
           return `${line} was changed from ${formatValue(from)} to ${formatValue(to)}`;
-        default:
+        case 'scope':
           return iter(children, `${currentKey}${settingName}.`);
+        case 'notChange':
+          return '';
+        default:
+          return null;
       }
     });
-    return outputLines.join('\n');
+    return outputLines;
   };
-  const output = iter(diffTree);
-  return output;
+  const lineFlatten = flattenDeep(iter(diffTree));
+  const output = lineFlatten.filter((el) => el !== '');
+  return output.join('\n');
 };
 
 export default plain;
