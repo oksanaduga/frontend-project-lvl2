@@ -21,13 +21,13 @@ const objectFormatter = (diffTree) => {
         children,
       } = node;
       const lineForming = {
-        removed: `${indent}- ${settingName}: ${determineValueType(from, indent)}`,
-        added: `${indent}+ ${settingName}: ${determineValueType(to, indent)}`,
-        change: `${indent}- ${settingName}: ${determineValueType(from, indent)}\n${indent}+ ${settingName}: ${determineValueType(to, indent)}`,
-        notChange: `${indent}  ${settingName}: ${determineValueType(to, indent)}`,
-        scope: `${indent}  ${settingName}: {\n${iter(children, depth + 1)}\n${closeIndent}}`,
+        removed: () => `${indent}- ${settingName}: ${determineValueType(from, indent)}`,
+        added: () => `${indent}+ ${settingName}: ${determineValueType(to, indent)}`,
+        change: () => `${indent}- ${settingName}: ${determineValueType(from, indent)}\n${indent}+ ${settingName}: ${determineValueType(to, indent)}`,
+        notChange: () => `${indent}  ${settingName}: ${determineValueType(to, indent)}`,
+        scope: () => `${indent}  ${settingName}: {\n${iter(children, depth + 1)}\n${closeIndent}}`,
       };
-      return lineForming[type];
+      return lineForming[type]();
     });
     return output.join('\n');
   };

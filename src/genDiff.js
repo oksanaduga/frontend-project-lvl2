@@ -11,7 +11,6 @@ const genDiff = (configBefore, configAfter) => {
         type: 'added',
         from: null,
         to: configAfter[settingName],
-        children: [],
       };
       return node;
     }
@@ -21,7 +20,6 @@ const genDiff = (configBefore, configAfter) => {
         type: 'removed',
         from: configBefore[settingName],
         to: null,
-        children: [],
       };
       return node;
     }
@@ -41,7 +39,6 @@ const genDiff = (configBefore, configAfter) => {
         type: 'notChange',
         from: configBefore[settingName],
         to: configAfter[settingName],
-        children: [],
       };
       return node;
     }
@@ -50,7 +47,6 @@ const genDiff = (configBefore, configAfter) => {
       type: 'change',
       from: configBefore[settingName],
       to: configAfter[settingName],
-      children: [],
     };
     return node;
   });
