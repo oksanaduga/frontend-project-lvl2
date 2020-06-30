@@ -11,7 +11,6 @@ const determineValueType = (value, indent) => {
 const objectFormatter = (diffTree) => {
   const iter = (diff, depth = 1) => {
     const indent = ' '.repeat((depth * 2) + (depth - 1) * 2);
-    const closeIndent = ' '.repeat((depth * 2) + (depth - 1) * 2 + 2);
     const output = diff.map((node) => {
       const {
         settingName,
@@ -25,7 +24,7 @@ const objectFormatter = (diffTree) => {
         added: () => `${indent}+ ${settingName}: ${determineValueType(to, indent)}`,
         change: () => `${indent}- ${settingName}: ${determineValueType(from, indent)}\n${indent}+ ${settingName}: ${determineValueType(to, indent)}`,
         notChange: () => `${indent}  ${settingName}: ${determineValueType(to, indent)}`,
-        scope: () => `${indent}  ${settingName}: {\n${iter(children, depth + 1)}\n${closeIndent}}`,
+        scope: () => `${indent}  ${settingName}: {\n${iter(children, depth + 1)}\n${indent}  }`,
       };
       return lineForming[type]();
     });
