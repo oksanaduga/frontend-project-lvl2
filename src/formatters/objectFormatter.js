@@ -1,6 +1,6 @@
 import { isPlainObject, keys, values } from 'lodash';
 
-const determineValueType = (value, indent) => {
+const generateValueOutput = (value, indent) => {
   if (!isPlainObject(value)) {
     return value;
   }
@@ -8,7 +8,7 @@ const determineValueType = (value, indent) => {
   return output;
 };
 
-const objectFormatter = (diffTree) => {
+const formatObject = (diffTree) => {
   const iter = (diff, depth = 1) => {
     const indent = ' '.repeat((depth * 2) + (depth - 1) * 2);
     const output = diff.map((node) => {
@@ -20,10 +20,10 @@ const objectFormatter = (diffTree) => {
         children,
       } = node;
       const lineForming = {
-        removed: () => `${indent}- ${settingName}: ${determineValueType(from, indent)}`,
-        added: () => `${indent}+ ${settingName}: ${determineValueType(to, indent)}`,
-        change: () => `${indent}- ${settingName}: ${determineValueType(from, indent)}\n${indent}+ ${settingName}: ${determineValueType(to, indent)}`,
-        notChange: () => `${indent}  ${settingName}: ${determineValueType(to, indent)}`,
+        removed: () => `${indent}- ${settingName}: ${generateValueOutput(from, indent)}`,
+        added: () => `${indent}+ ${settingName}: ${generateValueOutput(to, indent)}`,
+        change: () => `${indent}- ${settingName}: ${generateValueOutput(from, indent)}\n${indent}+ ${settingName}: ${generateValueOutput(to, indent)}`,
+        notChange: () => `${indent}  ${settingName}: ${generateValueOutput(to, indent)}`,
         scope: () => `${indent}  ${settingName}: {\n${iter(children, depth + 1)}\n${indent}  }`,
       };
       return lineForming[type]();
@@ -33,4 +33,4 @@ const objectFormatter = (diffTree) => {
   return `{\n${iter(diffTree)}\n}`;
 };
 
-export default objectFormatter;
+export default formatObject;

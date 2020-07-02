@@ -9,7 +9,7 @@ const formatters = {
   object: objectFormatter,
 };
 
-const formatOutput = (formatName) => {
+const getformatOutput = (formatName) => {
   if (!has(formatters, formatName)) {
     throw new Error('Unknown format: accept "plain", "object", "json"');
   }
@@ -17,4 +17,4 @@ const formatOutput = (formatName) => {
   return formatter;
 };
 
-export default formatOutput;
+export default getformatOutput;

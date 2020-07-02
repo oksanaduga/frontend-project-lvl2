@@ -14,7 +14,7 @@ const formatValue = (value) => {
 
 const plain = (diffTree) => {
   const iter = (diff, currentKey = '') => {
-    const outputLines = diff.map((node) => {
+    const outputLines = diff.flatMap((node) => {
       const {
         settingName,
         type,
@@ -33,15 +33,15 @@ const plain = (diffTree) => {
         case 'scope':
           return iter(children, `${currentKey}${settingName}.`);
         case 'notChange':
-          return '';
-        default:
           return null;
+        default:
+          throw new Error(`Unknown type date: '${type}'!`);
       }
     });
     return outputLines;
   };
-  const lineFlatten = flattenDeep(iter(diffTree));
-  const output = lineFlatten.filter((el) => el !== '');
+  const lineFlatten = iter(diffTree);
+  const output = lineFlatten.filter((el) => el !== null);
   return output.join('\n');
 };
 
