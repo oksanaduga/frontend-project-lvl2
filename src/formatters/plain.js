@@ -1,4 +1,4 @@
-import { isPlainObject, flattenDeep } from 'lodash';
+import { isPlainObject } from 'lodash';
 
 const formatValue = (value) => {
   if (isPlainObject(value)) {
